@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, FlatList, Text, StyleSheet,
-  ActivityIndicator, RefreshControl,
+  ActivityIndicator, RefreshControl, TouchableOpacity,
 } from 'react-native';
 import MovieCard from '../components/MovieCard';
 
@@ -15,13 +15,15 @@ export default function HomeScreen({ navigation }) {
 
   const fetchMovies = async () => {
     try {
+      setLoading(true);
       setError(null);
-      const res = await fetch(API_URL);
-      if (!res.ok) throw new Error('Gagal mengambil data');
+      const res = await fetch(API_URL, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Gagal mengambil data dari server');
       const data = await res.json();
       setMovies(data);
     } catch (e) {
-      setError(e.message);
+      setError('Gagal memuat data, periksa koneksi internet!');
+      setMovies([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -48,7 +50,9 @@ export default function HomeScreen({ navigation }) {
     return (
       <View style={styles.center}>
         <Text style={styles.errorText}>❌ {error}</Text>
-        <Text onPress={fetchMovies} style={styles.retry}>Coba lagi</Text>
+        <TouchableOpacity onPress={fetchMovies} style={styles.retryBtn}>
+          <Text style={styles.retry}>Coba lagi</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -76,7 +80,11 @@ export default function HomeScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  errorText: { fontSize: 16, color: 'red', marginBottom: 12 },
-  retry: { color: '#e50914', fontWeight: 'bold', fontSize: 16 },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
+  errorText: { fontSize: 16, color: 'red', marginBottom: 12, textAlign: 'center' },
+  retryBtn: {
+    backgroundColor: '#e50914', padding: 12,
+    borderRadius: 8, marginTop: 8,
+  },
+  retry: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
 });

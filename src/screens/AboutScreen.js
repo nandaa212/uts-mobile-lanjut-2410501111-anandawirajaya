@@ -8,9 +8,9 @@ export default function AboutScreen() {
         source={{ uri: 'https://i.imgur.com/3gmtkW3.jpeg' }} // ⚠️ ganti link foto kamu
         style={styles.avatar}
       />
-      <Text style={styles.name}>⚠️ ananda wirajaya</Text>
-      <Text style={styles.info}>NIM: ⚠️ 2410501111</Text>
-      <Text style={styles.info}>Kelas: ⚠️ A</Text>
+      <Text style={styles.name}> ananda wirajaya</Text>
+      <Text style={styles.info}>NIM:  2410501111</Text>
+      <Text style={styles.info}>Kelas: A</Text>
       <Text style={styles.info}>Tema: MovieDex (Tema B)</Text>
 
       <View style={styles.divider} />
